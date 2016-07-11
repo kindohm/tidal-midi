@@ -1,86 +1,113 @@
 # tidal-midi
 Tidal module for sending patterns over MIDI.
 
-__PortMIDI__ variant. Should work on OS X, Linux and Windows
+__PortMIDI__ variant. Should work on OS X, Linux and Windows.
 
-This _still_ is __experimental__ software
+This _still_ is __experimental__ software.
 
 ## Installation
 
 Simply do
 
 ```shell
+~$ cabal update
 ~$ cabal install tidal-midi
 ```
 
-__Note:__ On OS X with GHC 7.10 it is necessary to reinstall PortMidi again with frameworks correctly linked:
+__Note:__ On OS X with GHC 7.10 it is necessary to reinstall PortMidi again with
+frameworks correctly linked:
 
 ```shell
 cabal install portmidi --ghc-options="-optl-Wl,-framework,CoreMIDI,-framework,CoreAudio" --reinstall --jobs=1 --force-reinstalls
 ```
 
-### Installation from source
-
-If you want, you can also install tidal-midi from source. You will have to clone this repository and install from source:
-
-```shell
-~$ git clone https://github.com/tidalcycles/tidal-midi.git
-~$ cd tidal-midi
-~/tidal-midi$ cabal install
-```
-
-After that you can import Sound.Tidal.MIDI.Output within Haskell. To make use of tidal-midi within emacs and running along with tidal, depending on your editor you will have to edit the load script for tidal.
-
-### Setup for emacs
-
-Within your `tidal.el` script, locate the function `tidal-start-haskell` and add:
-
-```emacs
-(tidal-send-string "import Sound.Tidal.MIDI.Output")
-```
-
-after
-
-```emacs
-(tidal-send-string "import Sound.Tidal.Context")
-```
-
-Additionally you will have to add lines to import the synth you want to control via MIDI, e.g. `(tidal-send-string "import Sound.Tidal.SimpleSynth")` as well as the initialization commands for streams:
-
-```emacs
-(tidal-send-string "keyStreams <- midiproxy 1 \"SimpleSynth virtual input\" [(keys, 1)]")
-(tidal-send-string "[t1] <- sequence keyStreams")
-```
-For adding the MIDI device "SimpleSynth virtual input" and control it via MIDI channel 1. With this set up you will be able to use it via e.g. `t1 $ note "50"`
-
-Synth specific usage instructions can be found below. Note that these are simply assuming you are running tidal-midi directly via ghci command line. If you want any of the other synths within emacs, you will have to edit your `tidal.el` accordingly.
-
 ## Usage
 
-in your `.ghci` add the following, given you need an _additional_ latency of __1ms__, your _device name_ is __SimpleSynth virtual input__ and you want to send commands on MIDI channel __1__:
+_This guide assumes you are already familiar with Tidal and creating patterns
+with samples._
+
+### Get the names of MIDI devices on your system
+
+In order to use `tidal-midi` you will need the _exact_ name of a MIDI
+device on your system. You can get a list of MIDI devices on your system
+depending on your operating system:
+
+- Linux: `aconnect -o`
+- Mac OS X: use *Audio MIDI Setup*
+- Windows: no known methods. Use an application such as FL Studio to get a list
+
+After listing MIDI devices on your system, take note of the device name you
+will use. Devices names are case-sensitive.
+
+For the purposes of this guide, we'll assume your device name is "USB MIDI Device".
+
+### Basic tidal-midi code
+
+Assuming you're using the Atom editor, create a new file and save it with
+a `.tidal` extension (e.g. `midi-test.tidal`). Then, type the following in
+the editor:
 
 ```haskell
-import Sound.Tidal.MIDI.Output
-import Sound.Tidal.SimpleSynth
+import Sound.Tidal.MIDI.Context
 
-keyStreams <- midiproxy 1 "SimpleSynth virtual input" [(keys, 1)]
+devices <- midiDevices
 
-[k1] <- sequence keyStreams
+m1 <- midiStream devices "USB MIDI Device" 1 synthController
 ```
 
-You can alter the latency to fit your other sources (e.g. audio buffers etc.), but be aware that there is _already 100ms latency added_ to make sure incoming osc commands can be scheduled in the future. Note that the given latency is directly passed to __PortMidi__ `openOutput` which will send real-time __MIDI__ messages for latency __0__ which may or may not be what you want.
-
-To find out a particular device name you can use `aconnect -o` on linux and the __Audio MIDI Setup__ on Mac OS X.
-
-Channels can be multiple, e.g. for polyphonic synthesizers this makes it possible to have separate streams (like d1-9 for dirt) for each midi channel on the same device.
-
-`keys` in this case refers to the `ControllerShape` defined by the example simple synth. See [other supported synths](#supported-synths)
-
-Eventually run `ghci -XOverloadedStrings` and send __MIDI__ commands to a compliant device (software synth).
+Evaluate each of those lines (use `Shift+Enter` in the Atom
+editor). Now Atom is ready to run MIDI patterns using `m1`:
 
 ```haskell
-k1 $ note "50*4" |+| slow 2 (modwheel (scale 0.2 0.9 tri1))
+m1 $ note "0"
+-- plays a middle-C note
 ```
+
+The `note` param above is the same `note` from TidalCycles that you
+use to play a numbered sample in a named folder. In `tidal-midi`, you use
+same syntax to indicate a MIDI note, where 0 equals middle-C. The following
+pattern plays a major scale:
+
+```haskell
+m1 $ note "0 2 4 5 7 9 11 12"
+```
+
+You can use normal TidalCycles pattern transform functions to change `tidal-midi`
+patterns:
+
+```haskell
+m1 $ every 3 (rev) $ every 2 (density 2) $ note "0 2 4 5 7 9 11 12"
+```
+
+The `synthController` has some params that support MIDI Change Control messages,
+such as the mod wheel:
+
+```haskell
+m1 $ note "0 2 4 5 7 9 11 12" # modwheel "0.1 0.4 0.9"
+```
+
+MIDI CC params can have decimal values in the range *0 to 1*, which map to MIDI
+CC values *0 to 127*.
+
+_Custom synthesizer implementations implement additional MIDI CC parameters._
+
+### Custom MIDI Channels
+
+Let's review this line from the boilerplate code above:
+
+```haskell
+m1 <- midiStream devices "USB MIDI Device" 1 synthController
+```
+
+The 2nd to last parameter on that line indicates the channel number. Let's say
+your device is running on channel 7. You can specify channel 7 by changing the
+2nd to last parameter:
+
+```haskell
+m1 <- midiStream devices "USB MIDI Device" 7 synthController
+```
+
+### The default synthController (a.k.a "simple synth")
 
 The simple synth comes with _simple_ MIDI parameters, that any device should understand:
 
@@ -89,77 +116,13 @@ The simple synth comes with _simple_ MIDI parameters, that any device should und
 * expression
 * sustainpedal
 
-all of these parameters map the given values from __0..1__ to MIDI values ranging from __0..127__.
+All of these parameters map the given values from __0..1__ to MIDI values ranging from __0..127__.
 
-## Supported Synths
-
-### Korg Volca Keys
-
-Example:
-```haskell
-import Sound.Tidal.MIDI.Output
-import Sound.Tidal.VolcaKeys
-
-keyStreams <- midiproxy 1 "VolcaKeys" [(keys, 1)]
-
-[k1] <- sequence keyStreams
-```
-
-### Korg Volca Bass
-
-Example:
-```haskell
-import Sound.Tidal.MIDI.Output
-import Sound.Tidal.VolcaBass
-
-bassStreams <- midiproxy 1 "VolcaBass" [(bass, 1)]
-
-[k1] <- sequence bassStreams
-```
-
-
-### Korg Volca Beats
-
-Example:
-```haskell
-import Sound.Tidal.MIDI.Output
-import Sound.Tidal.VolcaBeats
-
-beatStreams <- midiproxy 1 "VolcaBeats" [(beats, 1)]
-
-[k1] <- sequence beatStreams
-```
-
-### Waldorf Blofeld
-
-Example:
+You can use all of these parameters like the familiar synth parameters in
+TidalCycles:
 
 ```haskell
-import Sound.Tidal.MIDI.Output
-import Sound.Tidal.Blofeld
-
-keyStreams <- midiproxy 1 "Waldorf Blofeld" [(keys, 1)]
-
-[k1] <- sequence keyStreams
-```
-
-### DSI Tetra
-
-#### Example
-
-assumes the following Tetra Global parameters:
-
-* `Multi mode`: __On__
-* `M Param Rec`: __NRPN__
-* `MIDI Channel`: __1__
-
-```haskell
-import Sound.Tidal.MIDI.Output
-import Sound.Tidal.Tetra
-
-keyStreams <- midiproxy 1 "DSI Tetra" [(keys 1),(keys, 2),(keys, 3),(keys, 4)]
-
-[k1,k2,k3,k4] <- sequence keyStreams
+m1 $ note "0*8" # modwheel "0.25 0.75" # balance "0.1 0.9" # expression (sine1)
 ```
 
 ## Known issues and limitations
