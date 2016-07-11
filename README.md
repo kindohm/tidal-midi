@@ -96,7 +96,8 @@ m1 $ note "0 2 4 5 7 9 11 12" # modwheel "0.1 0.4 0.9"
 MIDI CC params can have decimal values in the range *0 to 1*, which map to MIDI
 CC values *0 to 127*.
 
-_Custom synthesizer implementations implement additional MIDI CC parameters._
+_Custom synthesizer implementations may implement additional MIDI CC parameters.
+Please refer to the [supported synths](doc/synths.md) for more information._
 
 ### Custom MIDI Channels
 
