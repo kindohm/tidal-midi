@@ -66,8 +66,8 @@ The following code will play a very simple pattern on middle-C:
 m1 $ note "0"
 ```
 
-Above, the `note` param indicate a MIDI note, where 0 equals middle-C. The following
-pattern plays a major scale:
+Above, the `note` param indicates a MIDI note, where `0` equals middle-C. The
+following pattern plays a major scale:
 
 ```haskell
 m1 $ note "0 2 4 5 7 9 11 12"
