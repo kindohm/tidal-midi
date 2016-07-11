@@ -41,7 +41,7 @@ will use. Devices names are case-sensitive.
 
 For the purposes of this guide, we'll assume your device name is "USB MIDI Device".
 
-### Basic tidal-midi code
+### Get tidal-midi running
 
 Assuming you're using the Atom editor, create a new file and save it with
 a `.tidal` extension (e.g. `midi-test.tidal`). Then, type the following in
@@ -56,11 +56,14 @@ m1 <- midiStream devices "USB MIDI Device" 1 synthController
 ```
 
 Evaluate each of those lines (use `Shift+Enter` in the Atom
-editor). Now Atom is ready to run MIDI patterns using `m1`:
+editor). Now Atom is ready to run MIDI patterns using `m1`.
+
+### Playing patterns on your device
+
+The following code will play a very simple pattern on middle-C:
 
 ```haskell
 m1 $ note "0"
--- plays a middle-C note
 ```
 
 Above, the `note` param indicate a MIDI note, where 0 equals middle-C. The following
