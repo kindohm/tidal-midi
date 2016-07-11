@@ -63,13 +63,17 @@ m1 $ note "0"
 -- plays a middle-C note
 ```
 
-The `note` param above is the same `note` from TidalCycles that you
-use to play a numbered sample in a named folder. In `tidal-midi`, you use
-same syntax to indicate a MIDI note, where 0 equals middle-C. The following
+Above, the `note` param indicate a MIDI note, where 0 equals middle-C. The following
 pattern plays a major scale:
 
 ```haskell
 m1 $ note "0 2 4 5 7 9 11 12"
+```
+
+Alternatively, you can use `midinote` to explicitly use a MIDI note from 0 to 127:
+
+```haskell
+m1 $ midinote "60 62 64 65 67 69 71 72"
 ```
 
 You can use normal TidalCycles pattern transform functions to change `tidal-midi`
