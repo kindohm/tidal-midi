@@ -133,6 +133,9 @@ such as the mod wheel:
 m1 $ note "0 2 4 5 7 9 11 12" # modwheel "0.1 0.4 0.9"
 ```
 
+Details about the default MIDI CC messages can be found in the
+[default synth controller](#defaultsynthcontroller) section below.
+
 MIDI CC params can have decimal values in the range *0 to 1*, which map to MIDI
 CC values *0 to 127*.
 
@@ -161,10 +164,10 @@ m1 <- midiStream devices "USB MIDI Device" 7 synthController
 
 The simple synth comes with _simple_ MIDI parameters, that any device should understand:
 
-* modwheel
-* balance
-* expression
-* sustainpedal
+* modwheel (MIDI CC #1)
+* balance (MIDI CC #8)
+* expression (MIDI CC #11)
+* sustainpedal (MIDI CC #64)
 
 All of these parameters map the given values from __0..1__ to MIDI values ranging from __0..127__.
 
