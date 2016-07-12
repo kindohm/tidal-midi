@@ -194,7 +194,7 @@ Interested in using `tidal-midi` with your own synthesizer? Please read the guid
 Within your `tidal.el` script, locate the function `tidal-start-haskell` and add:
 
 ```emacs
-(tidal-send-string "import Sound.Tidal.MIDI.Output")
+(tidal-send-string "import Sound.Tidal.MIDI.Context")
 ```
 
 after
@@ -203,13 +203,15 @@ after
 (tidal-send-string "import Sound.Tidal.Context")
 ```
 
-Additionally you will have to add lines to import the synth you want to control via MIDI, e.g. `(tidal-send-string "import Sound.Tidal.SimpleSynth")` as well as the initialization commands for streams:
+Additionally you will have to add lines to import the synth you want to control via MIDI, e.g. `(tidal-send-string "import Sound.Tidal.VolcaKeys")` as well as the initialization commands for streams:
 
 ```emacs
-(tidal-send-string "keyStreams <- midiproxy 1 \"SimpleSynth virtual input\" [(keys, 1)]")
-(tidal-send-string "[t1] <- sequence keyStreams")
+(tidal-send-string "devices <- midiDevices")
+(tidal-send-string "t1 <- midiStream devices \"USB MIDI Device\" 1 synthController")
 ```
-For adding the MIDI device "SimpleSynth virtual input" and control it via MIDI channel 1. With this set up you will be able to use it via e.g. `t1 $ note "50"`
+
+The above code adds the MIDI device "USB MIDI Device" and controls it via MIDI channel 1.
+With this set up you will be able to use it via e.g. `t1 $ note "50"`
 
 
 # Known issues and limitations
