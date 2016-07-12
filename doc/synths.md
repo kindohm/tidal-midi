@@ -9,11 +9,10 @@ other custom implementations that support popular hardware synths:
 Example:
 ```haskell
 import Sound.Tidal.MIDI.Context
-import Sound.Tidal.VolcaKeys
+import Sound.Tidal.MIDI.VolcaKeys
 
-keyStreams <- midiproxy 1 "VolcaKeys" [(keys, 1)]
-
-[k1] <- sequence keyStreams
+devices <- midiDevices
+m1 <- midiStream devices "USB MIDI Device" 1 keysController
 ```
 
 ## Korg Volca Bass
@@ -21,12 +20,11 @@ keyStreams <- midiproxy 1 "VolcaKeys" [(keys, 1)]
 
 Example:
 ```haskell
-import Sound.Tidal.MIDI.Output
-import Sound.Tidal.VolcaBass
+import Sound.Tidal.MIDI.Context
+import Sound.Tidal.MIDI.VolcaBass
 
-bassStreams <- midiproxy 1 "VolcaBass" [(bass, 1)]
-
-[k1] <- sequence bassStreams
+devices <- midiDevices
+m1 <- midiStream devices "USB MIDI Device" 1 bassController
 ```
 
 
@@ -35,12 +33,11 @@ bassStreams <- midiproxy 1 "VolcaBass" [(bass, 1)]
 
 Example:
 ```haskell
-import Sound.Tidal.MIDI.Output
-import Sound.Tidal.VolcaBeats
+import Sound.Tidal.MIDI.Context
+import Sound.Tidal.MIDI.VolcaBeats
 
-beatStreams <- midiproxy 1 "VolcaBeats" [(beats, 1)]
-
-[k1] <- sequence beatStreams
+devices <- midiDevices
+m1 <- midiStream devices "USB MIDI Device" 1 beatsController
 ```
 
 ## Waldorf Blofeld
@@ -49,12 +46,11 @@ beatStreams <- midiproxy 1 "VolcaBeats" [(beats, 1)]
 Example:
 
 ```haskell
-import Sound.Tidal.MIDI.Output
+import Sound.Tidal.MIDI.Context
 import Sound.Tidal.Blofeld
 
-keyStreams <- midiproxy 1 "Waldorf Blofeld" [(keys, 1)]
-
-[k1] <- sequence keyStreams
+devices <- midiDevices
+m1 <- midiStream devices "USB MIDI Device" 1 keysController
 ```
 
 ## DSI Tetra
