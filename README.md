@@ -9,17 +9,17 @@ This _still_ is __experimental__ software.
 <li><a href="#installation">Installation</a></li>
 <li><a href="#usage">Usage</a>
   <ul>
-  <li>[MIDI devices on your system](#mididevices)</li>
-  <li>[Get tidal-midi running](#getrunning)</li>
-  <li>[Playing patterns](#playingpatterns)</li>
+  <li><a href="#mididevices">MIDI devices on your system</a></li>
+  <li><a href="#boot">Boot tidal-midi</a></li>
+  <li><a href="#playingpatterns">Playing Patterns</a></li>
   <li><a href="#custommidichannels">Custom MIDI Channels</a></li>
-  <li>[The default synthController](#defaultsynthcontroller)</li>
+  <li><a href="#defaultsynthcontroller">The default synthController</a></li>
   </ul>
 </li>
-<li>[Supported Synthesizers](#supportedsynths)</li>
-<li>[How to write your own synth mapping](#custommappings)</li>
-<li>[Automatic startup in Emacs](#emacs)</li>
-<li>[Known Issues](#known_issues)</li>
+<li><a href="#supportedsynths">Supported Synthesizers</a></li>
+<li><a href="#custommappings">How to write your own synth mapping</a></li>
+<li><a href="#emacs">Automatic bootup in Emacs</a></li>
+<li><a href="#known_issues">Known Issues</a></li>
 </ul>
 
 # Installation
@@ -60,8 +60,8 @@ will use. Devices names are case-sensitive.
 
 For the purposes of this guide, we'll assume your device name is "USB MIDI Device".
 
-## Get tidal-midi running
-<a name="getrunning"></a>
+## Boot tidal-midi
+<a name="boot"></a>
 
 Assuming you're using the Atom editor, create a new file and save it with
 a `.tidal` extension (e.g. `midi-test.tidal`). Then, type the following in
