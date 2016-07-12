@@ -6,13 +6,13 @@ __PortMIDI__ variant. Should work on OS X, Linux and Windows.
 This _still_ is __experimental__ software.
 
 <ul>
-<li>[Installation](#installation)</li>
-<li>[Usage](#usage)
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a>
   <ul>
   <li>[MIDI devices on your system](#mididevices)</li>
   <li>[Get tidal-midi running](#getrunning)</li>
   <li>[Playing patterns](#playingpatterns)</li>
-  <li>[Custom MIDI channels](#custommidichannels)</li>
+  <li><a href="#custommidichannels">Custom MIDI Channels</a></li>
   <li>[The default synthController](#defaultsynthcontroller)</li>
   </ul>
 </li>
