@@ -49,23 +49,35 @@ with samples._
 
 In order to use `tidal-midi` you will need the _exact_ name of a MIDI
 device on your system. You can get a list of MIDI devices on your system
-depending on your operating system:
+by running some code in a regular `.tidal` file.
 
-- Linux: `aconnect -o`
-- Mac OS X: use *Audio MIDI Setup*
-- Windows: no known methods. Use an application such as FL Studio to get a list
+Assuming you're using the Atom editor, create a new file and save it with
+a `.tidal` extension (e.g. `midi-test.tidal`). Then, type the following in
+the editor:
+
+```haskell
+import Sound.Tidal.MIDI.Context
+
+displayOutputDevices >>= putStrLn
+```
+
+Evalulate both of those above lines separately. They will then output a list of
+MIDI devices in your editor (Atom, Emacs, etc).
 
 After listing MIDI devices on your system, take note of the device name you
 will use. Devices names are case-sensitive.
 
 For the purposes of this guide, we'll assume your device name is "USB MIDI Device".
 
+> You only need to do this step whenever you want to get a list of devices.
+> Once you take note of your system's device names, you don't need to perform
+> this step ever again (unless you acquire a new MIDI device).
+
 ## Boot tidal-midi
 <a name="boot"></a>
 
-Assuming you're using the Atom editor, create a new file and save it with
-a `.tidal` extension (e.g. `midi-test.tidal`). Then, type the following in
-the editor:
+Make sure you're currently working in a file with a `.tidal` extension in
+your editor. Then type these three lines of bootup code:
 
 ```haskell
 import Sound.Tidal.MIDI.Context
