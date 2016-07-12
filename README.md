@@ -78,6 +78,13 @@ m1 <- midiStream devices "USB MIDI Device" 1 synthController
 Evaluate each of those lines (use `Shift+Enter` in the Atom
 editor). Now Atom is ready to run MIDI patterns using `m1`.
 
+> In the last line of the boot code above, the last three parameters
+> are the most important:
+>
+> - "USB MIDI Device" is the name of your device
+> - 1 is the MIDI channel number
+> - synthController is the type of synthesizer code to use (you can use custom ones)
+
 ## Playing patterns on your device
 <a name="playingpatterns"></a>
 
