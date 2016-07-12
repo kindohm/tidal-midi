@@ -163,6 +163,9 @@ TidalCycles:
 m1 $ note "0*8" # modwheel "0.25 0.75" # balance "0.1 0.9" # expression (sine1)
 ```
 
+See the section below on [Supported Synthesizers](#supportedsynths) for details
+on custom controllers for popular hardware synthesizers.
+
 # Supported Synthesizers
 <a name="supportedsynths"></a>
 
