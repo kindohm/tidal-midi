@@ -1,12 +1,29 @@
-# tidal-midi
-Tidal module for sending patterns over MIDI.
+#tidal-midi
+A [TidalCycles](http://tidalcycles.org) module for sending patterns over MIDI.
 
 __PortMIDI__ variant. Should work on OS X, Linux and Windows.
 
 This _still_ is __experimental__ software.
 
-## Installation
+<ul>
+<li>[Installation](#installation)</li>
+<li>[Usage](#usage)
+  <ul>
+  <li>[MIDI devices on your system](#mididevices)</li>
+  <li>[Get tidal-midi running](#getrunning)</li>
+  <li>[Playing patterns](#playingpatterns)</li>
+  <li>[Custom MIDI channels](#custommidichannels)</li>
+  <li>[The default synthController](#defaultsynthcontroller)</li>
+  </ul>
+</li>
+<li>[Supported Synthesizers](#supportedsynths)</li>
+<li>[How to write your own synth mapping](#custommappings)</li>
+<li>[Automatic startup in Emacs](#emacs)</li>
+<li>[Known Issues](#known_issues)</li>
+</ul>
 
+# Installation
+<a name="installation"></a>
 Simply do
 
 ```shell
@@ -21,12 +38,14 @@ frameworks correctly linked:
 cabal install portmidi --ghc-options="-optl-Wl,-framework,CoreMIDI,-framework,CoreAudio" --reinstall --jobs=1 --force-reinstalls
 ```
 
-## Usage
+# Usage
+<a name="usage"></a>
 
 _This guide assumes you are already familiar with Tidal and creating patterns
 with samples._
 
-### Get the names of MIDI devices on your system
+## Get the names of MIDI devices on your system
+<a name="mididevices"></a>
 
 In order to use `tidal-midi` you will need the _exact_ name of a MIDI
 device on your system. You can get a list of MIDI devices on your system
@@ -41,7 +60,8 @@ will use. Devices names are case-sensitive.
 
 For the purposes of this guide, we'll assume your device name is "USB MIDI Device".
 
-### Get tidal-midi running
+## Get tidal-midi running
+<a name="getrunning"></a>
 
 Assuming you're using the Atom editor, create a new file and save it with
 a `.tidal` extension (e.g. `midi-test.tidal`). Then, type the following in
@@ -58,7 +78,8 @@ m1 <- midiStream devices "USB MIDI Device" 1 synthController
 Evaluate each of those lines (use `Shift+Enter` in the Atom
 editor). Now Atom is ready to run MIDI patterns using `m1`.
 
-### Playing patterns on your device
+## Playing patterns on your device
+<a name="playingpatterns"></a>
 
 The following code will play a very simple pattern on middle-C:
 
@@ -99,7 +120,8 @@ CC values *0 to 127*.
 _Custom synthesizer implementations may implement additional MIDI CC parameters.
 Please refer to the [supported synths](doc/synths.md) for more information._
 
-### Custom MIDI Channels
+## Custom MIDI Channels
+<a name="custommidichannels"></a>
 
 Let's review this line from the boilerplate code above:
 
@@ -115,7 +137,8 @@ your device is running on channel 7. You can specify channel 7 by changing the
 m1 <- midiStream devices "USB MIDI Device" 7 synthController
 ```
 
-### The default synthController (a.k.a "simple synth")
+## The default synthController (a.k.a "simple synth")
+<a name="defaultsynthcontroller"></a>
 
 The simple synth comes with _simple_ MIDI parameters, that any device should understand:
 
@@ -133,6 +156,53 @@ TidalCycles:
 m1 $ note "0*8" # modwheel "0.25 0.75" # balance "0.1 0.9" # expression (sine1)
 ```
 
-## Known issues and limitations
+# Supported Synthesizers
+<a name="supportedsynths"></a>
+
+A variety of custom mappings have been created in `tidal-midi` for popular hardware synthesizers.
+Click on a device below to get details on its usage:
+
+* [DSI Tetra](doc/synths.md#dsi-tetra)
+* Elektron Analog RYTM
+* [Korg Volca Bass](doc/synths.md#korg-volca-bass)
+* [Korg Volca Beats](doc/synths.md#korg-volca-beats)
+* [Korg Volca Keys](doc/synths.md#korg-volca-keys)
+* Roland System-1M
+* Synthino
+* [Waldorf Blofeld](doc/synths.md#waldorf-blofeld)
+
+
+# How to write your own synth mapping
+<a name="custommappings"></a>
+
+Interested in using `tidal-midi` with your own synthesizer? Please read the guide on [Writing a new synth mapping](doc/synth-mapping.md).
+
+
+# Automatic startup in Emacs
+<a name="emacs"></a>
+
+Within your `tidal.el` script, locate the function `tidal-start-haskell` and add:
+
+```emacs
+(tidal-send-string "import Sound.Tidal.MIDI.Output")
+```
+
+after
+
+```emacs
+(tidal-send-string "import Sound.Tidal.Context")
+```
+
+Additionally you will have to add lines to import the synth you want to control via MIDI, e.g. `(tidal-send-string "import Sound.Tidal.SimpleSynth")` as well as the initialization commands for streams:
+
+```emacs
+(tidal-send-string "keyStreams <- midiproxy 1 \"SimpleSynth virtual input\" [(keys, 1)]")
+(tidal-send-string "[t1] <- sequence keyStreams")
+```
+For adding the MIDI device "SimpleSynth virtual input" and control it via MIDI channel 1. With this set up you will be able to use it via e.g. `t1 $ note "50"`
+
+
+# Known issues and limitations
+<a name="known_issues"></a>
 
 - SysEx support is there but really limited to work with the Waldorf Blofeld

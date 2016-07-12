@@ -3,7 +3,8 @@
 In addition to the simple synth (implemented by `synthController`), there are
 other custom implementations that support popular hardware synths:
 
-### Korg Volca Keys
+## Korg Volca Keys
+<a name="korg-volca-keys"></a>
 
 Example:
 ```haskell
@@ -15,7 +16,8 @@ keyStreams <- midiproxy 1 "VolcaKeys" [(keys, 1)]
 [k1] <- sequence keyStreams
 ```
 
-### Korg Volca Bass
+## Korg Volca Bass
+<a name="korg-volca-bass"></a>
 
 Example:
 ```haskell
@@ -28,7 +30,8 @@ bassStreams <- midiproxy 1 "VolcaBass" [(bass, 1)]
 ```
 
 
-### Korg Volca Beats
+## Korg Volca Beats
+<a name="korg-volca-beats"></a>
 
 Example:
 ```haskell
@@ -40,7 +43,8 @@ beatStreams <- midiproxy 1 "VolcaBeats" [(beats, 1)]
 [k1] <- sequence beatStreams
 ```
 
-### Waldorf Blofeld
+## Waldorf Blofeld
+<a name="waldorf-blofeld"></a>
 
 Example:
 
@@ -53,9 +57,10 @@ keyStreams <- midiproxy 1 "Waldorf Blofeld" [(keys, 1)]
 [k1] <- sequence keyStreams
 ```
 
-### DSI Tetra
+## DSI Tetra
+<a name="dsi-tetra"></a>
 
-#### Example
+### Example
 
 assumes the following Tetra Global parameters:
 
