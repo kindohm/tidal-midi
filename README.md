@@ -26,8 +26,8 @@ This _still_ is __experimental__ software.
 <li><a href="#known_issues">Known Issues</a></li>
 </ul>
 
-# Installation
 <a name="installation"></a>
+# Installation
 Simply do
 
 ```shell
@@ -42,14 +42,14 @@ frameworks correctly linked:
 cabal install portmidi --ghc-options="-optl-Wl,-framework,CoreMIDI,-framework,CoreAudio" --reinstall --jobs=1 --force-reinstalls
 ```
 
-# Usage
 <a name="usage"></a>
+# Usage
 
 _This guide assumes you are already familiar with Tidal and creating patterns
 with samples._
 
-## Get the names of MIDI devices on your system
 <a name="mididevices"></a>
+## Get the names of MIDI devices on your system
 
 In order to use `tidal-midi` you will need the _exact_ name of a MIDI
 device on your system. You can get a list of MIDI devices on your system
@@ -77,8 +77,8 @@ For the purposes of this guide, we'll assume your device name is "USB MIDI Devic
 > Once you take note of your system's device names, you don't need to perform
 > this step ever again (unless you acquire a new MIDI device).
 
-## Boot tidal-midi
 <a name="boot"></a>
+## Boot tidal-midi
 
 Make sure you're currently working in a file with a `.tidal` extension in
 your editor. Then type these three lines of bootup code:
@@ -101,8 +101,8 @@ editor). Now Atom is ready to run MIDI patterns using `m1`.
 > - 1 is the MIDI channel number
 > - synthController is the type of synthesizer code to use (you can use custom ones)
 
-## Playing patterns on your device
 <a name="playingpatterns"></a>
+## Playing patterns on your device
 
 The following code will play a very simple pattern on middle-C:
 
@@ -168,8 +168,8 @@ CC values *0 to 127*.
 _Custom synthesizer implementations may implement additional MIDI CC parameters.
 Please refer to the [supported synths](doc/synths.md) for more information._
 
-## Custom MIDI Channels
 <a name="custommidichannels"></a>
+## Custom MIDI Channels
 
 Let's review this line from the boilerplate code above:
 
@@ -185,8 +185,8 @@ your device is running on channel 7. You can specify channel 7 by changing the
 m1 <- midiStream devices "USB MIDI Device" 7 synthController
 ```
 
-## The default synthController (a.k.a "simple synth")
 <a name="defaultsynthcontroller"></a>
+## The default synthController (a.k.a "simple synth")
 
 The simple synth comes with _simple_ MIDI parameters, that any device should understand:
 
@@ -207,8 +207,8 @@ m1 $ note "0*8" # modwheel "0.25 0.75" # balance "0.1 0.9" # expression (sine1)
 See the section below on [Supported Synthesizers](#supportedsynths) for details
 on custom controllers for popular hardware synthesizers.
 
-# Supported Synthesizers
 <a name="supportedsynths"></a>
+# Supported Synthesizers
 
 A variety of custom mappings have been created in `tidal-midi` for popular hardware synthesizers.
 Click on a device below to get details on its usage:
@@ -223,14 +223,14 @@ Click on a device below to get details on its usage:
 * [Waldorf Blofeld](doc/synths.md#waldorf-blofeld)
 
 
-# How to write your own synth mapping
 <a name="custommappings"></a>
+# How to write your own synth mapping
 
 Interested in using `tidal-midi` with your own synthesizer? Please read the guide on [Writing a new synth mapping](doc/synth-mapping.md).
 
 
-# Automatic startup in Emacs
 <a name="emacs"></a>
+# Automatic startup in Emacs
 
 Within your `tidal.el` script, locate the function `tidal-start-haskell` and add:
 
@@ -255,7 +255,7 @@ The above code adds the MIDI device "USB MIDI Device" and controls it via MIDI c
 With this set up you will be able to use it via e.g. `t1 $ note "50"`
 
 
-# Known issues and limitations
 <a name="known_issues"></a>
+# Known issues and limitations
 
 - SysEx support is there but really limited to work with the Waldorf Blofeld
