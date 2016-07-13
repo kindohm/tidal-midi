@@ -11,7 +11,11 @@ This _still_ is __experimental__ software.
   <ul>
   <li><a href="#mididevices">MIDI devices on your system</a></li>
   <li><a href="#boot">Boot tidal-midi</a></li>
-  <li><a href="#playingpatterns">Playing Patterns</a></li>
+  <li><a href="#playingpatterns">Playing Patterns</a>
+    <ul>
+      <li><a href="#veldur">Note length, velocity, and other MIDI CC parameters</li>
+    </ul>
+  </li>
   <li><a href="#custommidichannels">Custom MIDI Channels</a></li>
   <li><a href="#defaultsynthcontroller">The default synthController</a></li>
   </ul>
@@ -124,6 +128,28 @@ patterns:
 
 ```haskell
 m1 $ every 3 (rev) $ every 2 (density 2) $ note "0 2 4 5 7 9 11 12"
+```
+
+### Note length, velocity, and other MIDI CC parameters
+<a name="veldur"></a>
+
+Note length and velocity are controlled using the `dur` and `velocity`
+parameters, respectively.
+
+The value of `dur` is given in seconds:
+
+```haskell
+m1 $ note "0 2" # dur "0.05 0.2"
+
+m1 $ note "0 2" # dur (scale 0.05 0.3 $ slow 1.5 tri1)
+```
+
+`velocity` has a range from *0 to 1*, and equates to MIDI values *0 to 127*:
+
+```haskell
+m1 $ note "0 2 4 5 7 9 11 12" # velocity "0.5 0.75 1"
+
+m1 $ note "0 2 4 5 7 9 11 12" # velocity (scale 0.5 1 $ slow 1.5 saw1)
 ```
 
 The `synthController` has some params that support MIDI Change Control messages,
