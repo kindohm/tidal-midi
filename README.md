@@ -199,7 +199,7 @@ m5 <- midiStream devices "USB MIDI Device" 5 synthController
 
 m1 $ note (run 4) # velocity "0.5"
 m2 $ note "0*2 5 7" # dur "0.1"
-m3 $ midinote "36 60"
+m5 $ midinote "36 60"
 ```
 
 > Note: at the time of this writing, multiple channels can cause scheduling
