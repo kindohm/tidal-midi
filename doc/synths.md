@@ -65,10 +65,12 @@ assumes the following Tetra Global parameters:
 * `MIDI Channel`: __1__
 
 ```haskell
-import Sound.Tidal.MIDI.Output
+import Sound.Tidal.MIDI.Context
 import Sound.Tidal.Tetra
 
-keyStreams <- midiproxy 1 "DSI Tetra" [(keys 1),(keys, 2),(keys, 3),(keys, 4)]
-
-[k1,k2,k3,k4] <- sequence keyStreams
+devices <- midiDevices
+m1 <- midiStream devices "USB MIDI Device" 1 polysynth
+m2 <- midiStream devices "USB MIDI Device" 2 polysynth
+m3 <- midiStream devices "USB MIDI Device" 3 polysynth
+m4 <- midiStream devices "USB MIDI Device" 4 polysynth
 ```
