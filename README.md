@@ -130,8 +130,8 @@ patterns:
 m1 $ every 3 (rev) $ every 2 (density 2) $ note "0 2 4 5 7 9 11 12"
 ```
 
-### Note length, velocity, and other MIDI CC parameters
 <a name="veldur"></a>
+### Note length, velocity, and other MIDI CC parameters
 
 Note length and velocity are controlled using the `dur` and `velocity`
 parameters, respectively.
